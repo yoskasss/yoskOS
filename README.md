@@ -32,6 +32,15 @@ Derleme tamamlandıktan sonra, yoskOS'u QEMU kullanarak çalıştırabilirsiniz:
 qemu-system-i386 -cdrom yoskOS.iso
 ```
 
+## Görüntüler
+![resim](https://github.com/user-attachments/assets/6b20f29e-29a1-4c92-9193-384e1bb3881b)
+
+
+https://github.com/user-attachments/assets/c1e9e650-f2da-4081-999e-a3d26864a9c4
+
+
+
+
 ## Lisans
 
 Bu proje açık kaynaklıdır ve MIT Lisansı altında kullanılabilir. 
