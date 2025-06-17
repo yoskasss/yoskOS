@@ -40,6 +40,12 @@ https://github.com/user-attachments/assets/c1e9e650-f2da-4081-999e-a3d26864a9c4
 
 
 
+## ISO Dosyası
+[Doğrudan İndirme linki](https://github.com/yoskasss/yoskOS/releases/download/untagged-7f0e99797725a296e42c/yoskOS.iso)
+
+
+
+[İndirme Sayfası](https://github.com/yoskasss/yoskOS/releases)
 
 ## Lisans
 
