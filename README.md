@@ -45,7 +45,7 @@ https://github.com/user-attachments/assets/c1e9e650-f2da-4081-999e-a3d26864a9c4
 
 
 
-[İndirme Sayfası](https://github.com/yoskasss/yoskOS/releases)
+[İndirme Sayfası](https://github.com/yoskasss/yoskOS/releases/download/ISO)
 
 ## Lisans
 
