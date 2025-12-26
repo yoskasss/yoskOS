@@ -55,7 +55,27 @@ qemu-system-i386 -cdrom yoskOS.iso -m 512
 - `libs/` - Kütüphaneler
 - `build/` - Derleme çıktıları
 - `iso/` - ISO dosyaları
+## Görsel Ekleme
+### image.py ile Header Oluşturma
+`image.py` scripti, bir görsel dosyasını C header dosyasına dönüştürür.
+```bash
+python3 image.py
+```
+- Görsel seçin (PNG, JPG, BMP).
+- Header dosyasını kaydedin (örn. `include/yeni.h`).
 
+### Show Komutuna Görsel Ekleme
+1. Oluşturulan header'ı `include/` dizinine koyun.
+2. `kernel/images.c`'de `#include` ekleyin ve `available_images` dizisine yeni resmi ekleyin:
+   ```c
+   #include "../include/yeni.h"
+   const Image available_images[] = {
+       // ... mevcut resimler
+       { yeni_image_data, YENI_IMAGE_WIDTH, YENI_IMAGE_HEIGHT },
+   };
+   ```
+3. `num_available_images` otomatik güncellenir.
+4. Derleyin: `make`
 ## Lisans
 MIT License (LICENSE dosyasına bakın)
 
