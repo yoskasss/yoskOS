@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yoskOS</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #0f1220;
+      color: #eaeaf0;
+      line-height: 1.6;
+    }
+    header {
+      padding: 60px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #1b1f3b, #0f1220);
+    }
+    header img {
+      width: 200px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1.2rem;
+      color: #b8b8d4;
+    }
+    section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .feature {
+      background: #181c36;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .feature h3 {
+      margin-bottom: 10px;
+    }
+    .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .screenshots img {
+      width: 100%;
+      border-radius: 12px;
+      background: #22264a;
+      transition: transform 0.3s;
+    }
+    .screenshots img:hover {
+      transform: scale(1.05);
+    }
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background: #0b0d1a;
+      color: #8f90b3;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+    }
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <!-- Logo -->
+    <img src="yoskOS.png" alt="yoskOS Logo" />
+    <h1>yoskOS</h1>
+    <p>Basit, hızlı ve sade bir işletim sistemi</p>
+  </header>
+
+  <section>
+    <h2>Bağlantılar</h2>
+    <div class="features">
+      <a class="feature" href="yoskOS.iso" download>
+        <h3>ISO İndir</h3>
+        <p>yoskOS kurulum dosyasını indir.</p>
+      </a>
+      <a class="feature" href="https://github.com/yoskasss/yoskOS" target="_blank">
+        <h3>GitHub</h3>
+        <p>Kaynak kodları ve geliştirme süreci.</p>
+      </a>
+      <a class="feature" href="https://www.youtube.com/@yoskasss" target="_blank">
+        <h3>YouTube</h3>
+        <p>Tanıtım ve geliştirme videoları.</p>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ekran Görüntüleri</h2>
+    <div class="screenshots">
+      <!-- SS'lerini buraya ekle -->
+      <img src="https://private-user-images.githubusercontent.com/188091452/530421094-89236692-f44b-488b-9d3e-40d10a257b28.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjY3ODM1OTUsIm5iZiI6MTc2Njc4MzI5NSwicGF0aCI6Ii8xODgwOTE0NTIvNTMwNDIxMDk0LTg5MjM2NjkyLWY0NGItNDg4Yi05ZDNlLTQwZDEwYTI1N2IyOC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMjI2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTIyNlQyMTA4MTVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wNDcyMWFkZjE5NjY0NzJkYWRjN2M2NGNhODcxY2Q1YjBmNTY4ZDQxNzQ4ZWVlYmRlNTdkZjc3NzQ5NjI0YzdiJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.Rl33Dltm0qxkeLj5lbClCwoLFccHD8lKOflKPBZ2Aog" alt="yoskOS ekran görüntüsü 1" />
+      <img src="https://private-user-images.githubusercontent.com/188091452/530421060-77f2f6b2-ff1f-4f0d-bbff-f4c7d2dfaf99.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjY3ODM1OTUsIm5iZiI6MTc2Njc4MzI5NSwicGF0aCI6Ii8xODgwOTE0NTIvNTMwNDIxMDYwLTc3ZjJmNmIyLWZmMWYtNGYwZC1iYmZmLWY0YzdkMmRmYWY5OS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMjI2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTIyNlQyMTA4MTVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hOGIyYzRlNzcxMDUyM2E3ZjMwOGY3OTM3MmYyNGI5OTc2ZGMxZWM2Nzk3ZjYwYTMxNGQ0YzBjYTJiNTcyMTdlJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.EPF8TyVaFAeq34GTTjeTqVdchfV9v0gzTegj0EGAly4" alt="yoskOS ekran görüntüsü 2" />
+      <img src="https://private-user-images.githubusercontent.com/188091452/530421076-731c2732-67ba-41b5-b67f-fa24a5cc43b1.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjY3ODM1OTUsIm5iZiI6MTc2Njc4MzI5NSwicGF0aCI6Ii8xODgwOTE0NTIvNTMwNDIxMDc2LTczMWMyNzMyLTY3YmEtNDFiNS1iNjdmLWZhMjRhNWNjNDNiMS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMjI2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTIyNlQyMTA4MTVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01MWM2MzYxMDJiM2RiMGY4M2ZlNjc4Y2NiYTBjMzQ2OGUwYTk4NzNlYjIzYTRkMmMwZDA1MjQwMGNkMTExYWViJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.bBT-aJ9xDw_0Krg6hpLZbiK7iih4I_xW__hLmHNm7_8" alt="yoskOS ekran görüntüsü 3" />
+    </div>
+  </section>
+
+  <div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+  </div>
+
+  <footer>
+    <p>© 2025 yoskOS – Tüm hakları saklıdır.</p>
+  </footer>
+
+  <script>
+    var modal = document.getElementById("myModal");
+    var modalImg = document.getElementById("img01");
+    var images = document.querySelectorAll(".screenshots img");
+    images.forEach(function(img) {
+      img.onclick = function(){
+        modal.style.display = "flex";
+        modalImg.src = this.src;
+      }
+    });
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    modal.onclick = function() {
+      modal.style.display = "none";
+    }
+    modalImg.onclick = function(event) {
+      event.stopPropagation();
+    }
+  </script>
+
+</body>
+</html>
