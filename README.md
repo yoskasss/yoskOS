@@ -6,6 +6,9 @@ Basit ve eğitici bir i686 işletim sistemi projesi.
 
 **Website:** https://yoskasss.github.io/yoskOS/
 
+
+**Qemu Kurulum Videosu** https://shitmyweb.free.nf/view.php?id=694f0792a6e99
+
 ## Özellikler
 - Terminal kabuğu
 - Basit dosya sistemi (fs.c)
