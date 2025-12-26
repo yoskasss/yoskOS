@@ -2,7 +2,10 @@
 <img width="320" height="320" alt="yoskOS" src="https://github.com/user-attachments/assets/201df4f8-89f5-4c2b-bda7-cf8b045e566b" />
 
 Basit ve eğitici bir i686 işletim sistemi projesi.
-https://yoskasss.github.io/yoskOS/
+
+
+**Website:** https://yoskasss.github.io/yoskOS/
+
 ## Özellikler
 - Terminal kabuğu
 - Basit dosya sistemi (fs.c)
