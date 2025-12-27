@@ -6,6 +6,9 @@
 #include "../include/uptime.h"  // Add uptime.h include
 #include "../include/images.h"  // Add images.h include
 
+volatile unsigned int timer_ticks = 0;
+
+char log_buffer[4096] = "";
 
 // Global screen dimensions
 int screen_width = 80;
@@ -334,6 +337,82 @@ char tr_q_keymap_shifted[128] = {
 
 // ------------ VGA Grafik Fonksiyonları -------------
 
+#define VGA_WIDTH  80
+#define VGA_HEIGHT 25
+#define VGA_ADDR   0xB8000
+
+/* ------------------ VGA ------------------ */
+
+void vga_put_char_at(char c, int x, int y, unsigned char color) {
+    volatile unsigned short* vga = (unsigned short*)VGA_ADDR;
+    vga[y * VGA_WIDTH + x] = (color << 8) | c;
+}
+
+void vga_print_at(const char* str, int x, int y, unsigned char color) {
+    for (int i = 0; str[i]; i++) {
+        vga_put_char_at(str[i], x + i, y, color);
+    }
+}
+
+void clear_line(int y) {
+    for (int x = 0; x < VGA_WIDTH; x++) {
+        vga_put_char_at(' ', x, y, 0x07);
+    }
+}
+
+void scroll_up() {
+    for (int i = 0; i < 1920; i++) { // 80*24 = 1920
+        VIDEO_MEMORY[i] = VIDEO_MEMORY[i + 80];
+    }
+    // Clear the last line
+    for (int i = 1920; i < 2000; i++) {
+        VIDEO_MEMORY[i] = ' ' | (0x07 << 8);
+    }
+    // Adjust cursor if necessary
+    if (cursor >= 1920) {
+        cursor = 1920;
+    }
+}
+
+char history_line[81];
+
+void scroll_down() {
+    // Save the first line to history
+    for (int i = 0; i < 80; i++) {
+        history_line[i] = VIDEO_MEMORY[i] & 0xFF; // character only
+    }
+    history_line[80] = '\0';
+
+    for (int i = 1999; i >= 80; i--) {
+        VIDEO_MEMORY[i] = VIDEO_MEMORY[i - 80];
+    }
+    // Clear the first line
+    for (int i = 0; i < 80; i++) {
+        VIDEO_MEMORY[i] = ' ' | (0x07 << 8);
+    }
+    // Adjust cursor if necessary
+    if (cursor < 80) {
+        cursor = 80;
+    }
+}
+
+
+/* ------------------ DEBUG BAR ------------------ */
+
+void draw_debug(const char* user, const char* path) {
+    clear_line(0);  // SOL ÜST SATIRI TAM TEMİZLE
+
+    vga_print_at(user, 0, 0, 0x0D); // yeşil
+    vga_print_at(" ", strlen(user), 0, 0x0D);
+    vga_print_at(path, strlen(user) + 1, 0, 0x0D);
+}
+int ticks = 0;
+int state = 3;
+
+
+
+
+
 #define VGA_WIDTH 320
 #define VGA_HEIGHT 200
 #define TEXT_MODE 0x03
@@ -383,7 +462,22 @@ unsigned char inb(unsigned short port) {
     return ret;
 }
 
+void outb(unsigned short port, unsigned char val) {
+    __asm__ __volatile__ ("outb %0, %1" : : "a"(val), "Nd"(port));
+}
+
 // ----------------- Yardımcı Fonksiyonlar --------------------------
+void timer_handler() {
+    timer_ticks++;
+}
+void timer_init() {
+    unsigned int divisor = 1193180 / 100;
+
+    outb(0x43, 0x36);
+    outb(0x40, divisor & 0xFF);
+    outb(0x40, (divisor >> 8) & 0xFF);
+}
+
 // Tek bir karakteri ekrana basan fonksiyon
 void print_char(char c) {
     // VIDEO_MEMORY ve cursor değişkenlerinizin burada erişilebilir olduğunu varsayıyorum
@@ -490,6 +584,22 @@ void print_path(Folder* folder) {
     print(folder->name);
 }
 
+char* get_path_string(Folder* folder, char* buffer, int max_len) {
+    if (folder->parent == NULL) {
+        buffer[0] = '/';
+        strcpy(buffer + 1, folder->name);
+    } else {
+        get_path_string(folder->parent, buffer, max_len);
+        int len = strlen(buffer);
+        if (len + 1 + strlen(folder->name) < max_len) {
+            buffer[len] = '/';
+            buffer[len+1] = '\0';
+            strcpy(buffer + len + 1, folder->name);
+        }
+    }
+    return buffer;
+}
+
 Folder* find_subfolder(Folder* current, const char* name) {
     for (int i = 0; i < current->child_count; i++) {
         if (strcmp(current->children[i]->name, name) == 0)
@@ -561,6 +671,27 @@ const char* fs_read(const char* name) {
         }
     }
     return NULL;
+}
+void qemu_exit() {
+    asm volatile (
+        "mov $0x2000, %ax\n"
+        "mov $0x604, %dx\n"
+        "out %ax, %dx\n"
+    );
+}
+void reboot() {
+    unsigned char good = 0x02;
+    while (good & 0x02)
+        good = inb(0x64);
+    outb(0x64, 0xFE);
+}
+
+
+void kernel_exit() {
+    asm volatile ("cli"); // interruptları kapat
+    while (1) {
+        asm volatile ("hlt"); // CPU'yu durdur
+    }
 }
 
 void clear_screen() {
@@ -1238,6 +1369,20 @@ char get_char() {
                 }
             }
 
+            // Handle arrow keys
+            if (scancode == 0x48) { // Up arrow
+                return 0x01; // Special code for up arrow
+            }
+            if (scancode == 0x50) { // Down arrow
+                return 0x02; // Special code for down arrow
+            }
+            if (scancode == 0x4B) { // Left arrow
+                return 0x03; // Special code for left arrow
+            }
+            if (scancode == 0x4D) { // Right arrow
+                return 0x04; // Special code for right arrow
+            }
+
             // Get character from appropriate keymap
             if (shift_active) {
                 char key_char = tr_q_keymap_shifted[scancode];
@@ -1331,6 +1476,13 @@ void gets(char* buf) {
     }
     buf[i] = '\0';
 }
+
+void wait(unsigned int seconds) {
+    for (volatile unsigned long i = 0; i < seconds * 100000000UL; i++) {
+        // Busy wait, yaklaşık saniye başına 100M iterasyon
+    }
+}
+
 // ----------------- Terminal ---------------------------
 
 void run_terminal() {
@@ -1346,10 +1498,14 @@ void run_terminal() {
     Folder* current = root;
     char input[128]; // Increased input buffer size
 
+    print_ascii_art("\n");
     print_ascii_art("\nyoskOS\n\n");
     print("Temizlemek icin 'clear' yaz\n");
 
     while (1) {
+        char path[128];
+        get_path_string(current, path, sizeof(path)); 
+        draw_debug(username, path);
         print("\nYoskShell&");
         print(username);
         print(" -> ");
@@ -1357,11 +1513,17 @@ void run_terminal() {
         get_line(input, sizeof(input));
         parse_input(input, command, arg);
 
+        if (input[0] != '\0') 
+        { 
+            strncat(log_buffer, input, sizeof(log_buffer) - strlen(log_buffer) - 1);
+            strncat(log_buffer, "\n", sizeof(log_buffer) - strlen(log_buffer) - 1);
+        } 
+        
         if (input[0] == '\0') continue;
         // run_terminal fonksiyonu içindeki if bloğunun son hali
 
           if (strcmp(command, "show") == 0) {
-            print("Kullanilabilir resimler: 1-2-3 ");
+            print("Kullanilabilir resimler: 1-2-3-4");
             print_int(num_available_images);
             print("\nGosterilecek resim numarasini girin: ");
 
@@ -1394,25 +1556,47 @@ void run_terminal() {
             print("\n");
             print_ascii_art(input + 6);
         }
+        else if (strcmp(command, "screen") == 0) {
+            print_color("Ekran Boyutunu Giriniz\n", 0x0F);
+
+            print_color("Genislik: ", 0x07);
+            char width_buffer[16];
+            gets(width_buffer);
+            int width = simple_atoi(width_buffer);
+
+            print_color("Yukseklik: ", 0x07);
+            char height_buffer[16];
+            gets(height_buffer);
+            int height = simple_atoi(height_buffer);
+
+            if (width > 0 && height > 0 && width <= 80 && height <= 25) {
+                screen_width = width;
+                screen_height = height;
+                print_color("Ekran boyutu guncellendi.\n", 0x0A);
+            } else {
+                print_color("Hata: Gecersiz ekran boyutu.\n", 0x0C);
+            }
+        }
+
         
         else if (strcmp(command, "mkdir") == 0) {
             if (strlen(arg) == 0) {
-                print("Kullanım: mkdir <isim>\n");
+                print("Kullanim: mkdir <isim>\n");
                 continue;
             }
             if (create_folder(arg, current)) {
-                print("Klasör oluşturuldu: ");
+                print("Klasor olusturuldu: ");
                 print(arg);
                 print("\n");
             } else {
-                print("Klasör oluşturulamadı (zaten var mı ya da yer yok mu?)\n");
+                print("Klasor olusturulamadi (zaten var mi ya da yer yok mu?)\n");
             }
 
         }
         // run_terminal fonksiyonunda not_start çağrısını düzeltin
         else if (strcmp(command, "not") == 0) {
             if (strlen(arg) == 0) {
-                print("Kullanım: not <dosyaadı>\n");
+                print("Kullanim: not <dosyaadi>\n");
                 continue;
             }
             char *args[] = {"not", arg};  // Argüman dizisi oluştur
@@ -1431,7 +1615,7 @@ void run_terminal() {
                 Folder* next = find_subfolder(current, arg);
                 if (next) current = next;
                 else {
-                    print("Klasör bulunamadı: ");
+                    print("Klasör bulunamadi: ");
                     print(arg);
                     print("\n");
                 }
@@ -1456,19 +1640,19 @@ void run_terminal() {
                 }
 
                 if (strlen(name_start) == 0) {
-                    print("Kullanım: write <dosyaadi> <icerik>\n");
+                    print("Kullanim: write <dosyaadi> <icerik>\n");
                 } else if (fs_create(name_start, content_start) == 0) {
-                    print("Dosya yazıldı.\n");
+                    print("Dosya yazildi.\n");
                 } else {
-                    print("Dosya yazılamadı (yer yok mu?)\n");
+                    print("Dosya yazilamadi (yer yok mu?)\n");
                 }
             } else {
-                print("Kullanım: write <dosyaadi> <icerik>\n");
+                print("Kullanim: write <dosyaadi> <icerik>\n");
             }
         }
         else if (strcmp(command, "cat") == 0) {
             if (strlen(arg) == 0) {
-                print("Kullanım: cat <dosyaadi>\n");
+                print("Kullanim: cat <dosyaadi>\n");
                 continue;
             }
             const char* content = fs_read(arg);
@@ -1476,13 +1660,28 @@ void run_terminal() {
                 print(content);
                 print("\n");
             } else {
-                print("Dosya bulunamadı.\n");
+                print("Dosya bulunamadi.\n");
             }
         }
         else if (strcmp(command, "pwd") == 0) {
             print_path(current);
             print("\n");
 
+        }
+        else if (strcmp(command, "exit") == 0) {
+            print_color("Sistem 5 saniye sonra kapatiliyor...\n", 0x04);
+            wait(1);
+            print_color("Sistem 4 saniye sonra kapatiliyor...\n", 0x04);
+            wait(1);
+            print_color("Sistem 3 saniye sonra kapatiliyor...\n", 0x04);
+            wait(1);
+            print_color("Sistem 2 saniye sonra kapatiliyor...\n", 0x04);
+            wait(1);
+            print_color("Sistem 1 saniye sonra kapatiliyor...\n", 0x04);
+            wait(1);
+            print_color("Sistem kapatildi.\n", 0x04);
+            qemu_exit();
+            kernel_exit();
         }
 
         else if (strcmp(command, "ascii") == 0) {
@@ -1491,12 +1690,8 @@ void run_terminal() {
         }
         else if (strcmp(command, "help") == 0) {
             clear_screen();
-            // Üst tarafta küçük logo göster
-            render_logo_at_top(available_images[3].data, available_images[3].width, available_images[3].height, 80, 25);
-            cursor = screen_width * 0 + 11; // Logo 10 genişliğinde, yanında başla
-            
-            // Cursor'u logo altına ayarla
-            cursor = screen_width * 17;
+            // Cursor'u başa ayarla
+            cursor = screen_width * 0;
             print("Komutlar:\n");
             print_color("  help   -> Bu menuyu acar\n",0x0A);    
             print_color("  ascii  -> ASCII art gosterir (ascii <yazi>)\n",0x0A);
@@ -1508,8 +1703,18 @@ void run_terminal() {
             print_color("  pwd    -> Bulundugun yolu gosterir\n",0x0A);
             print_color("  not    -> Notepad uygulamasini acar\n",0x0A);
             print_color("  game   -> Oyun uygulamasini acar\n",0x0A);
-            print_color("  show    -> Bitmap ile görsel görüntüleyici\n",0X0A);
+            print_color("  show    -> Bitmap ile gorsel goruntuleyici\n",0X0A);
+            print_color("  screen -> Ekran boyutunu ayarlar (screen)\n",0X0A);
+            print_color("  log    -> Komutlari dosyaya kaydeder\n",0X0A);
+            print_color("  exit   -> Sistemi kapatir\n",0X0A);
             print_color("  clear  -> Ekrani temizler\n",0X0A);
+
+        } else if (strcmp(command, "log") == 0) {
+            if (fs_create("inputs.txt", log_buffer) == 0) {
+                print("Komutlar inputs.txt dosyasina kaydedildi.\n");
+            } else {
+                print("Dosya oluşturulamadi.\n");
+            }
 
         } else if (strcmp(command, "clear") == 0) {
             clear_screen();
@@ -1865,4 +2070,3 @@ void kernel_main() {
     clear_screen();
     run_terminal();
 }
-
