@@ -1,89 +1,132 @@
 # yoskOS
+
 <img width="320" height="320" alt="yoskOS" src="https://github.com/user-attachments/assets/201df4f8-89f5-4c2b-bda7-cf8b045e566b" />
 
-Basit ve eğitici bir i686 işletim sistemi projesi.
+A simple and educational i686 operating system project.
 
+**Website:** [https://yoskasss.github.io/yoskOS/](https://yoskasss.github.io/yoskOS/)
 
-**Website:** https://yoskasss.github.io/yoskOS/
+**QEMU Installation Video:**
+[https://shitmyweb.free.nf/view.php?id=694f0792a6e99](https://shitmyweb.free.nf/view.php?id=694f0792a6e99)
 
+---
 
-**Qemu Kurulum Videosu** https://shitmyweb.free.nf/view.php?id=694f0792a6e99
+## Features
 
-## Özellikler
-- Terminal kabuğu
-- Basit dosya sistemi (fs.c)
-- Notepad uygulaması
-- Uptime uygulaması
-- XOX ve Hangman oyunları
-- Bitmap görüntü gösterimi
+* Terminal shell
+* Simple file system (`fs.c`)
+* Notepad application
+* Uptime application
+* Tic-Tac-Toe (XOX) and Hangman games
+* Bitmap image rendering
 
-## Komutlar
-- `help` - Komut listesi
-- `clear` - Ekran temizleme
-- `ls` - Dosya listesi
-- `cd <dizin>` - Dizin değiştirme
-- `pwd` - Mevcut dizin
-- `cat <dosya>` - Dosya içeriği
-- `write <dosya> <içerik>` - Dosya yazma
-- `mkdir <isim>` - Klasör oluşturma
-- `not <dosya>` - Notepad açma
-- `ascii <metin>` - ASCII art
-- `show` - Görüntü gösterimi
-- `game` - Oyun menüsü
-- `xox` - XOX oyunu
-- `hangman` - Adam asmaca oyunu
-## Görseller
-<img width="719" height="410" alt="image" src="https://github.com/user-attachments/assets/77f2f6b2-ff1f-4f0d-bbff-f4c7d2dfaf99" />
-<img width="685" height="448" alt="image" src="https://github.com/user-attachments/assets/731c2732-67ba-41b5-b67f-fa24a5cc43b1" />
+---
+
+## Commands
+
+* `help` – List available commands
+* `clear` – Clear the screen
+* `ls` – List files
+* `cd <directory>` – Change directory
+* `pwd` – Show current directory
+* `cat <file>` – Display file contents
+* `write <file> <content>` – Write to a file
+* `mkdir <name>` – Create a directory
+* `not <file>` – Open Notepad
+* `ascii <text>` – ASCII art
+* `show` – Display images
+* `game` – Game menu
+* `xox` – Tic-Tac-Toe game
+* `hangman` – Hangman game
+
+---
+
+## Screenshots
+
+<img width="731" height="431" alt="image" src="https://github.com/user-attachments/assets/28b105e6-f115-4ce4-aef6-1200bfbac575" />
+<img width="719" height="451" alt="image" src="https://github.com/user-attachments/assets/6f89103e-8485-4e93-aaab-8e271907811c" />
 <img width="685" height="448" alt="image" src="https://github.com/user-attachments/assets/35c0cae2-5088-485b-aa09-ee89d86f3193" />
-<img width="685" height="448" alt="image" src="https://github.com/user-attachments/assets/89236692-f44b-488b-9d3e-40d10a257b28" />
+<img width="715" height="399" alt="image" src="https://github.com/user-attachments/assets/4615ed98-9567-492b-a874-5c7cfdfab1f5" />
+<img width="715" height="399" alt="image" src="https://github.com/user-attachments/assets/13bd99d4-3288-4149-83ba-f26e42b00700" />
 
-## Gereksinimler
-- NASM
-- i686-elf-gcc (cross-compiler)
-- Make
-- GRUB
-- QEMU (test için)
+---
 
-## Derleme
+## Requirements
+
+* NASM
+* i686-elf-gcc (cross-compiler)
+* Make
+* GRUB
+* QEMU (for testing)
+
+---
+
+## Build
+
 ```bash
 make
 ```
 
-## Çalıştırma
+---
+
+## Run
+
 ```bash
 qemu-system-i386 -cdrom yoskOS.iso -m 512
 ```
 
-## Proje Yapısı
-- `kernel/` - Çekirdek kodu
-- `apps/` - Uygulamalar
-- `include/` - Başlık dosyaları
-- `libs/` - Kütüphaneler
-- `build/` - Derleme çıktıları
-- `iso/` - ISO dosyaları
-## Görsel Ekleme
-### image.py ile Header Oluşturma
-`image.py` scripti, bir görsel dosyasını C header dosyasına dönüştürür.
+---
+
+## Project Structure
+
+* `kernel/` – Kernel source code
+* `apps/` – Applications
+* `include/` – Header files
+* `libs/` – Libraries
+* `build/` – Build outputs
+* `iso/` – ISO files
+
+---
+
+## Adding Images
+
+### Creating a Header with image.py
+
+The `image.py` script converts an image file into a C header file.
+
 ```bash
 python3 image.py
 ```
-- Görsel seçin (PNG, JPG, BMP).
-- Header dosyasını kaydedin (örn. `include/yeni.h`).
 
-### Show Komutuna Görsel Ekleme
-1. Oluşturulan header'ı `include/` dizinine koyun.
-2. `kernel/images.c`'de `#include` ekleyin ve `available_images` dizisine yeni resmi ekleyin:
+* Select an image (PNG, JPG, BMP).
+* Save the header file (e.g. `include/new_image.h`).
+
+### Adding an Image to the `show` Command
+
+1. Place the generated header file into the `include/` directory.
+2. Add an `#include` in `kernel/images.c` and append the new image to the `available_images` array:
+
    ```c
-   #include "../include/yeni.h"
+   #include "../include/new_image.h"
+
    const Image available_images[] = {
-       // ... mevcut resimler
-       { yeni_image_data, YENI_IMAGE_WIDTH, YENI_IMAGE_HEIGHT },
+       // ... existing images
+       { new_image_data, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT },
    };
    ```
-3. `num_available_images` otomatik güncellenir.
-4. Derleyin: `make`
-## Lisans
-MIT License (LICENSE dosyasına bakın)
+3. `num_available_images` is updated automatically.
+4. Rebuild the project:
 
-İyi çalışmalar!
+   ```bash
+   make
+   ```
+
+---
+
+## License
+
+MIT License (see the LICENSE file)
+
+---
+
+Good luck! 🚀
