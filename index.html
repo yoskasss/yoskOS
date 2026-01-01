@@ -50,6 +50,12 @@
       padding: 20px;
       border-radius: 12px;
       text-align: center;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s;
+    }
+    .feature:hover {
+      transform: translateY(-5px);
     }
     .feature h3 {
       margin-bottom: 10px;
@@ -119,15 +125,19 @@
       </a>
       <a class="feature" href="https://github.com/yoskasss/yoskOS" target="_blank">
         <h3>GitHub</h3>
-        <p>Source code and development process.</p>
+        <p>Source code and development progress.</p>
       </a>
       <a class="feature" href="https://www.youtube.com/@yoskasss" target="_blank">
         <h3>YouTube</h3>
-        <p>Introduction and development videos.</p>
+        <p>Introductory and development videos.</p>
       </a>
       <a class="feature" href="https://shitmyweb.free.nf/view.php?id=694f0792a6e99" target="_blank">
         <h3>Installation Video</h3>
-        <p>Virtual machine installation video.</p>
+        <p>Installation video on a virtual machine.</p>
+      </a>
+      <a class="feature" href="https://github.com/yoskasss/yoskOS/releases" target="_blank">
+        <h3>Updates</h3>
+        <p>Releases, new features, and changelog.</p>
       </a>
     </div>
   </section>
@@ -135,7 +145,6 @@
   <section>
     <h2>Screenshots</h2>
     <div class="screenshots">
-      <!-- Add your screenshots here -->
       <img src="ss1.png" alt="yoskOS screenshot 1" />
       <img src="ss2.png" alt="yoskOS screenshot 2" />
       <img src="ss3.png" alt="yoskOS screenshot 3" />
@@ -148,7 +157,7 @@
   </div>
 
   <footer>
-    <p>© 2025 yoskOS – All rights reserved.</p>
+    <p>© 2026 yoskOS – All rights reserved.</p>
   </footer>
 
   <script>
@@ -165,8 +174,10 @@
     span.onclick = function() {
       modal.style.display = "none";
     }
-    modal.onclick = function() {
-      modal.style.display = "none";
+    modal.onclick = function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
     }
     modalImg.onclick = function(event) {
       event.stopPropagation();
