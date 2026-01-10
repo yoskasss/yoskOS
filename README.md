@@ -62,14 +62,12 @@ yoskOS/
 ├── LICENSE                  # License file
 ├── linker.ld                # Linker script
 ├── Makefile                 # Build file
-├── readme.md                # This file
-├── rm                       # Removal script
+├── readme.md                # This file                      
 ├── apps/                    # Applications directory
 │   ├── notepad.c            # Notepad application
 │   ├── uptime.c             # Uptime application
 │   └── games/               # Games
 │       └── games.c          # Game source code
-├── Görüntüler/              # Images directory
 ├── grub/                    # GRUB configuration
 │   └── grub.cfg             # GRUB configuration file
 ├── include/                 # Header files
