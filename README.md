@@ -5,13 +5,6 @@ A simple and educational i686 operating system project.
 
 **Website:** https://yoskasss.github.io/yoskOS/
 
-
-## Features in V 26.01.11
-- **Change background colour:** Changing the background colour with the `colorbg` command.
-- **Updated info:** You can now obtain more information using the `info` command.
-- **A more appealing help screen**
-- **More organised and modular source code**
-
 ## Commands
 - `help` - Command list
 - `clear` - Clear screen
