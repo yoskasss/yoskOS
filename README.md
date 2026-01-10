@@ -24,22 +24,34 @@ A simple and educational i686 operating system project.
 
 ## Commands
 
-* `help` – List available commands
+### File System Commands
+
+* `ls` – List directory contents
+* `cd <directory>` – Change directory (use `cd ..` to go up)
+* `pwd` – Show the current path
+* `mkdir <name>` – Create a new directory
+* `write <file> <content>` – Create a file and write content to it
+* `cat <file>` – Display the contents of a file
+
+### Applications
+
+* `not` – Open the Notepad application
+* `game` – Open the game menu
+* `show` – Open the image viewer
+* `ascii <text>` – Display text as ASCII art
+
+### System Commands
+
+* `info` – Display system information (supports flags like `info -a`)
+* `screen` – Adjust screen resolution settings
+* `colorbg <color>` – Change background color (e.g., black, blue, green, etc.)
+* `log` – Save command history to a file
 * `clear` – Clear the screen
-* `ls` – List files
-* `cd <directory>` – Change directory
-* `pwd` – Show current directory
-* `cat <file>` – Display file contents
-* `write <file> <content>` – Write to a file
-* `mkdir <name>` – Create a directory
-* `not <file>` – Open Notepad
-* `ascii <text>` – ASCII art
-* `show` – Display images
-* `game` – Game menu
-* `xox` – Tic-Tac-Toe game
-* `hangman` – Hangman game
+* `help` – Show the help menu
+* `exit` – Shut down the system
 
 ---
+
 
 ## Screenshots
 
