@@ -33,10 +33,13 @@ A simple and educational i686 operating system project.
 - `log` - Get system logs
 - `screen` - Screen resizing
 ## Screenshots
-<img width="719" height="410" alt="image" src="https://github.com/user-attachments/assets/77f2f6b2-ff1f-4f0d-bbff-f4c7d2dfaf99" />
+<img width="698" height="384" alt="image" src="https://github.com/user-attachments/assets/04870436-3c0c-4e6c-942f-e1579cde549b" />
+<img width="698" height="384" alt="image" src="https://github.com/user-attachments/assets/b386dcc2-f796-4608-8360-a68619317d54" />
+<img width="700" height="452" alt="image" src="https://github.com/user-attachments/assets/0a4c56e4-290d-439f-b23a-db0db4b3d122" />
 <img width="685" height="448" alt="image" src="https://github.com/user-attachments/assets/731c2732-67ba-41b5-b67f-fa24a5cc43b1" />
-<img width="685" height="448" alt="image" src="https://github.com/user-attachments/assets/35c0cae2-5088-485b-aa09-ee89d86f3193" />
-<img width="685" height="448" alt="image" src="https://github.com/user-attachments/assets/89236692-f44b-488b-9d3e-40d10a257b28" />
+<img width="700" height="452" alt="image" src="https://github.com/user-attachments/assets/a52dad6d-c2f3-481e-8b00-84391c9de0c2" />
+
+
 
 ## Requirements
 - NASM
