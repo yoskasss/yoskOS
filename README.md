@@ -26,6 +26,17 @@ A simple and educational i686 operating system project.
 - `log` - Get system logs
 - `screen` - Screen resizing
 ## Screenshots
+
+<img width="758" height="467" alt="ss9" src="https://github.com/user-attachments/assets/e4214eec-81b0-4003-b81d-1f557eddcab6" />
+<img width="758" height="467" alt="ss8" src="https://github.com/user-attachments/assets/f086c22c-d6bc-4fa4-833e-ef395a46f158" />
+<img width="758" height="467" alt="ss7" src="https://github.com/user-attachments/assets/1e11c7a0-68d5-455a-a53f-71884e7847dc" />
+<img width="758" height="467" alt="ss6" src="https://github.com/user-attachments/assets/35bd626f-772e-4274-a1e6-c7be537e29fd" />
+
+
+
+
+V26.01.01
+
 <img width="698" height="384" alt="image" src="https://github.com/user-attachments/assets/04870436-3c0c-4e6c-942f-e1579cde549b" />
 <img width="698" height="384" alt="image" src="https://github.com/user-attachments/assets/b386dcc2-f796-4608-8360-a68619317d54" />
 <img width="700" height="452" alt="image" src="https://github.com/user-attachments/assets/0a4c56e4-290d-439f-b23a-db0db4b3d122" />
