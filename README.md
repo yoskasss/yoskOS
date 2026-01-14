@@ -1,30 +1,42 @@
-# yoskOS 26.01.11
+# yoskOS 26.01.15
 <img width="320" height="320" alt="yoskOS" src="https://github.com/user-attachments/assets/201df4f8-89f5-4c2b-bda7-cf8b045e566b" />
 
 A simple and educational i686 operating system project.
 
 **Website:** https://yoskasss.github.io/yoskOS/
 
-## Commands
-- `help` - Command list
-- `clear` - Clear screen
-- `ls` - File list
-- `cd <directory>` - Change directory
-- `pwd` - Current directory
-- `cat <file>` - File content
-- `write <file> <content>` - Write file
-- `mkdir <name>` - Create folder
-- `not <file>` - Open Notepad
-- `ascii <text>` - ASCII art
-- `show` - Image display
-- `game` - Game menu
-- `xox` - Tic-tac-toe game
-- `hangman` - Hangman game
-- `info` - System information
-- `colorbg <color>` - Change background color
-- `exit` - Safe exit
-- `log` - Get system logs
-- `screen` - Screen resizing
+### File System Commands
+- `ls` - Lists all files and folders in the current directory
+- `cd <directory>` - Changes to the specified directory (use `cd ..` to go back)
+- `pwd` - Displays the current directory path
+- `cat <file>` - Shows the content of a file
+- `write <file> <content>` - Creates or overwrites a file with specified content
+- `mkdir <name>` - Creates a new directory
+
+### Applications
+- `gui` - Opens the graphical user interface menu
+- `not <file>` - Opens the Notepad application (supports saving/loading files)
+- `ascii <text>` - Displays text as ASCII art
+- `show` - Image viewer for displaying system images
+- `game` - Opens the game menu
+### Process Management
+- `ps` - Lists all running processes with their information
+- `pinfo <pid>` - Shows detailed information about a specific process
+- `pskill <pid>` - Terminates a process by its process ID
+
+### Games
+- `xox` - Tic-tac-toe game (play against the computer)
+- `hangman` - Hangman word guessing game
+
+### System Commands
+- `help` - Displays the help menu with all available commands
+- `clear` - Clears the screen
+- `info` - Shows system information (supports options like `info -a`)
+- `colorbg <color>` - Changes the background color
+  - Available colors: black, blue, green, cyan, red, magenta, brown, lightgray, darkgray, lightblue, lightgreen, lightcyan, lightred, lightmagenta, yellow, white
+- `screen` - Adjusts screen resolution
+- `log` - Saves command history to a file
+- `exit` - Safely shuts down the system
 ## Screenshots
 
 <img width="758" height="467" alt="ss9" src="https://github.com/user-attachments/assets/e4214eec-81b0-4003-b81d-1f557eddcab6" />
@@ -92,12 +104,14 @@ yoskOS/
 │   ├── info.h               # System info headers
 │   ├── kernel.h             # Kernel headers
 │   ├── notepad.h            # Notepad headers
+│   ├── process.h            # Process management headers
 │   ├── string.h             # String headers
 │   └── uptime.h             # Uptime headers
 ├── kernel/                  # Kernel source codes
 │   ├── images.c             # Image processing
 │   ├── kernel_entry.asm     # Kernel entry assembly
-│   └── kernel.c             # Main kernel code
+│   ├── kernel.c             # Main kernel code
+│   └── process.c            # Process management implementation
 └── libs/                    # Library source codes
     ├── console.c            # Console library
     ├── div64.c              # 64-bit division
