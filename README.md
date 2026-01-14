@@ -35,7 +35,7 @@ A simple and educational i686 operating system project.
 
 
 
-V26.01.01
+V26.01.11
 
 <img width="698" height="384" alt="image" src="https://github.com/user-attachments/assets/04870436-3c0c-4e6c-942f-e1579cde549b" />
 <img width="698" height="384" alt="image" src="https://github.com/user-attachments/assets/b386dcc2-f796-4608-8360-a68619317d54" />
